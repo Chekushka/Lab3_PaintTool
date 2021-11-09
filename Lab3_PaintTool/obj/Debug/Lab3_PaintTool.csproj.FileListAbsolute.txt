@@ -1,0 +1,10 @@
+C:\Study\5 курс\1 семестр\С#\Lab3_PaintTool\Lab3_PaintTool\obj\Debug\Lab3_PaintTool.csprojAssemblyReference.cache
+C:\Study\5 курс\1 семестр\С#\Lab3_PaintTool\Lab3_PaintTool\obj\Debug\Lab3_PaintTool.Properties.Resources.resources
+C:\Study\5 курс\1 семестр\С#\Lab3_PaintTool\Lab3_PaintTool\obj\Debug\Lab3_PaintTool.csproj.GenerateResource.cache
+C:\Study\5 курс\1 семестр\С#\Lab3_PaintTool\Lab3_PaintTool\obj\Debug\Lab3_PaintTool.csproj.CoreCompileInputs.cache
+C:\Study\5 курс\1 семестр\С#\Lab3_PaintTool\Lab3_PaintTool\bin\Debug\Lab3_PaintTool.exe.config
+C:\Study\5 курс\1 семестр\С#\Lab3_PaintTool\Lab3_PaintTool\bin\Debug\Lab3_PaintTool.exe
+C:\Study\5 курс\1 семестр\С#\Lab3_PaintTool\Lab3_PaintTool\bin\Debug\Lab3_PaintTool.pdb
+C:\Study\5 курс\1 семестр\С#\Lab3_PaintTool\Lab3_PaintTool\obj\Debug\Lab3_PaintTool.exe
+C:\Study\5 курс\1 семестр\С#\Lab3_PaintTool\Lab3_PaintTool\obj\Debug\Lab3_PaintTool.pdb
+C:\Study\5 курс\1 семестр\С#\Lab3_PaintTool\Lab3_PaintTool\obj\Debug\Lab3_PaintTool.PaintTool.resources
