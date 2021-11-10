@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 
 namespace Lab3_PaintTool
 {
@@ -14,26 +17,47 @@ namespace Lab3_PaintTool
         private Bitmap _workingImage;
         private Graphics _workingGraphics;
         private Button _selectedShapeButton;
+        private readonly PictureSerialization _serialization;
         
+        private readonly string _xmlFilePath = Path.Combine(Directory.GetCurrentDirectory(), "paint.xml");
+        private readonly string _datFilePath = Path.Combine(Directory.GetCurrentDirectory(), "paint.dat");
+
         public PaintTool()
         {
             InitializeComponent();
+            
+            _serialization = new PictureSerialization();
             LoadPictureBox();
-            // Make the pen selected by default
+
             _selectedShapeButton = PenButton;
-            _selectedShapeButton.BackColor = Color.Red; 
+            _selectedShapeButton.BackColor = Color.Red;
         }
 
         private void LoadPictureBox()
         {
             var width = pictureBox1.Width;
             var height = pictureBox1.Height;
-
-            _paintImage = new Bitmap(width, height);
-
-            _paintGraphics = Graphics.FromImage(_paintImage);
-
-            _paintGraphics.FillRectangle(Brushes.White, 0, 0, width, height);
+            
+            if (File.Exists(_xmlFilePath))
+            {
+                using (var fs = new FileStream(_xmlFilePath, FileMode.OpenOrCreate))
+                {
+                    var xmlFormatter = new XmlSerializer(typeof(PictureSerialization));
+                    var binFormatter = new BinaryFormatter();
+                    var paintTool = (PictureSerialization)xmlFormatter.Deserialize(fs);
+                    // var paintTool = (PictureSerialization)binFormatter.Deserialize(fs);
+                      
+                    paintTool.Deserialize();
+                    _paintImage = paintTool.PaintImage;
+                    _paintGraphics = Graphics.FromImage(_paintImage);
+                }
+            }
+            else
+            {
+                _paintImage = new Bitmap(width, height);
+                _paintGraphics = Graphics.FromImage(_paintImage);
+                _paintGraphics.FillRectangle(Brushes.White, 0, 0, width, height);
+            }
             
             pictureBox1.Image = _paintImage;
 
@@ -168,9 +192,13 @@ namespace Lab3_PaintTool
 
         private void ExitApp(object sender, EventArgs e)
         {
-            if(MessageBox.Show("Do you want to Exit?",
-                "Exit",MessageBoxButtons.YesNo,MessageBoxIcon.Information)==DialogResult.Yes)
-                Application.Exit();
+            if (MessageBox.Show("Do you want to Exit?",
+                "Exit", MessageBoxButtons.YesNo, MessageBoxIcon.Information) != DialogResult.Yes) return;
+            
+            SerializeToXml();
+            SerializeToBinary();
+            
+            Application.Exit();
         }
 
         #endregion
@@ -212,5 +240,32 @@ namespace Lab3_PaintTool
         }
 
         #endregion
+
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e) 
+        {
+            SerializeToXml();
+            // SerializeToBinary();
+        }
+
+        private void SerializeToXml()
+        {
+            _serialization.PaintImage = _paintImage;
+            _serialization.Serialize();
+            
+            var formatter = new XmlSerializer(typeof(PictureSerialization));
+            using (var fs = new FileStream(_xmlFilePath, FileMode.OpenOrCreate))
+                formatter.Serialize(fs, _serialization);
+        }
+
+        private void SerializeToBinary()
+        {
+            _serialization.PaintImage = _paintImage;
+            _serialization.Serialize();
+            
+            var formatter = new BinaryFormatter();
+            using (var fs = new FileStream(_datFilePath, FileMode.OpenOrCreate))
+                formatter.Serialize(fs, _serialization);
+        }
     }
 }
